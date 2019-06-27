@@ -48,8 +48,8 @@ class App extends Component {
             colors={colors}
             guesses={this.state.guesses}
           />
-          <div>
-            <ColorPicker
+          <div className="RightSide">
+            <ColorPicker 
               colors={colors}
               selColorIdx={this.state.selColorIdx}
             />

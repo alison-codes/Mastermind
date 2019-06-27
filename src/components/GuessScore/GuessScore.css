@@ -1,5 +1,13 @@
 .GuessScore {
   display: flex;
+  flex-wrap: wrap;  
   align-items: center;
   width: 24px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+.ScorePeg {
+  border-color: black;
+  margin: 0px;
 }

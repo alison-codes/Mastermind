@@ -3,11 +3,18 @@
 }
 
 .button {
-  width: 40px;
-  height: 40px;
-  margin: 5px;
+  width: 44px;
+  height: 44px;
+  margin: 6px;
   border-width: 14px;
   border-radius: 50%;
   opacity: 0.85;
   cursor: pointer;
+  display: flex;
+}
+
+
+.ColorPicker {
+  justify-content: space-around;
+  align-self: center;
 }

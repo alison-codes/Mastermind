@@ -2,13 +2,17 @@ import React from 'react';
 import GuessPegs from '../GuessPegs/GuessPegs';
 import GuessScore from '../GuessScore/GuessScore';
 import ScoreButton from '../ScoreButton/ScoreButton';
+import styles from './GuessRow.module.css';
+
 
 const GuessRow = (props) => (
-  <div className='flex-h'>
-    <div style={{color: props.currentGuess ? 'black' : 'lightgrey'}}>
+  //may not need to add GuessRow class to outer div
+  <div className={`${styles.GuessRow} flex-h`}>
+    <div style={{
+      color: props.currentGuess ? 'black' : 'lightgrey'}}>
       {props.rowIdx + 1}
     </div>
-    <GuessPegs
+    <GuessPegs className={styles.GuessRow}
       colors={props.colors}
       code={props.guess.code}
     />

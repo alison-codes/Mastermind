@@ -1,15 +1,30 @@
 .App {
   display: flex;
   flex-direction: column;
+  color: gray;
 }
 
 .App-header {
-  background-color: #222;
   height: 50px;
   padding: 10px;
-  color: white;
+  color: gray;
   font-size: 22px;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 10px 0px;
 }
 
+footer {
+  text-align: center;
+  padding: 30px;
+  font-size: 20px;
+}
 
+.RightSide {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  margin-left: 5vw;
+  align-items: center;
+}

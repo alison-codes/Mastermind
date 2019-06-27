@@ -31,7 +31,7 @@ const GuessScore = ({ score }) => {
   return (
     <div className='GuessScore'>
       {scores.map((score, idx) =>
-        <div
+        <div className='ScorePeg'
           key={idx}
           style={{...baseStyle, ...pegStyles[score]}} />
       )}
