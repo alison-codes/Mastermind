@@ -21,10 +21,9 @@ footer {
   font-size: 20px;
 }
 
-.RightSide {
+.App-RightSide {
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
+  flex-flow: column;
   margin-left: 5vw;
   align-items: center;
 }

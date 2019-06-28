@@ -12,26 +12,28 @@ class App extends Component {
     super();
     this.state = {
       selColorIdx: 0,
-      guesses: [this.getNewGuess(), this.getNewGuess(), this.getNewGuess(), this.getNewGuess()],
+      // Update to initial with only one guess object
+      guesses: [this.getNewGuess()],
       code: this.genCode()
     };
   }
-
   getNewGuess() {
     return {
-      // code: [null, null, null, null],
-      code: [3, 2, 1, 0], 
+      code: [null, null, null, null],
       score: {
         perfect: 0,
         almost: 0
       }
     };
   }
-
   genCode() {
     return new Array(4).fill().map(dummy => Math.floor(Math.random() * 4));
   }
-
+  //event handlers
+  handleColorSelection = (colorIdx) => {
+    // debugger
+    this.setState({selColorIdx: colorIdx});
+  };
   getWinTries() {
     // if winner, return num guesses, otherwise 0 (no winner)
     let lastGuess = this.state.guesses.length - 1;
@@ -48,10 +50,11 @@ class App extends Component {
             colors={colors}
             guesses={this.state.guesses}
           />
-          <div className="RightSide">
-            <ColorPicker 
+          <div className="App-RightSide">
+            <ColorPicker
               colors={colors}
               selColorIdx={this.state.selColorIdx}
+              handleColorSelection={this.handleColorSelection}
             />
             <GameTimer />
             <NewGameButton />

@@ -15,6 +15,7 @@ const GuessRow = (props) => (
     <GuessPegs className={styles.GuessRow}
       colors={props.colors}
       code={props.guess.code}
+      currentGuess={props.currentGuess}
     />
     {
       props.currentGuess ?
