@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {
       selColorIdx: 0,
       // Update to initial with only one guess object
-      guesses: [this.getNewGuess()],
+      guesses: [this.getNewGuess(), this.getNewGuess()],
       code: this.genCode()
     };
   }
@@ -26,20 +26,61 @@ class App extends Component {
       }
     };
   }
+  handleNewGame = () => {
+    this.setState(this.returnBlankState());
+  }
+  returnBlankState() {
+    return {
+      selColorIdx: 0,
+      guesses: [this.getNewGuess()],
+      code: this.genCode()
+    };
+  }
   genCode() {
     return new Array(4).fill().map(dummy => Math.floor(Math.random() * 4));
   }
   //event handlers
   handleColorSelection = (colorIdx) => {
     // debugger
-    this.setState({selColorIdx: colorIdx});
+    this.setState({ selColorIdx: colorIdx });
   };
   getWinTries() {
     // if winner, return num guesses, otherwise 0 (no winner)
     let lastGuess = this.state.guesses.length - 1;
     return this.state.guesses[lastGuess].score.perfect === 4 ? lastGuess + 1 : 0;
   }
+  addColor = (idx) => {
+    let guesses = [...this.state.guesses];
+    guesses[guesses.length - 1].code[idx] =
+      this.state.selColorIdx;
+    this.setState({
+      guesses: guesses
+    })
+  };
+  scoreGuess = () => {
+    let perfect = 0;
+    let almost = 0;
+    let masterCode = [this.state.code][0];
+    let masterCodeCopy = [...masterCode];
+    let guessNumber = this.state.guesses.length - 1;
+    let userCode = this.state.guesses[guessNumber].code;
 
+    console.log('mastercode:', masterCode);
+    console.log('usercode:', userCode);
+    userCode.forEach((guessedPeg, idx) => {
+      if (masterCodeCopy[idx] === guessedPeg) {
+        perfect++;
+        masterCodeCopy[idx] = null;
+      }
+      else if (masterCodeCopy.includes(guessedPeg)) {
+        almost++;
+        masterCodeCopy[idx] = null;
+      }
+      return;
+    });
+    console.log('perfect:', perfect);
+    console.log('almost:', almost);
+  }
   render() {
     let winTries = this.getWinTries();
     return (
@@ -49,6 +90,8 @@ class App extends Component {
           <GameBoard
             colors={colors}
             guesses={this.state.guesses}
+            addColor={this.addColor}
+            scoreGuess={this.scoreGuess}
           />
           <div className="App-RightSide">
             <ColorPicker
@@ -57,7 +100,9 @@ class App extends Component {
               handleColorSelection={this.handleColorSelection}
             />
             <GameTimer />
-            <NewGameButton />
+            <NewGameButton
+              handleNewGame={this.handleNewGame}
+            />
           </div>
         </div>
         <footer>{(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}</footer>

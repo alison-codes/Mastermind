@@ -2,9 +2,12 @@ import React from 'react';
 import styles from './ScoreButton.module.css';
 
 const ScoreButton = (props) => (
-  <button className={`${styles.button} btn btn-default`}>
+  <button disabled={props.code.includes(null)}
+      className={`${styles.button} btn btn-default`}
+      onClick={props.scoreGuess}>
     ✔
   </button>
 );
+
 
 export default ScoreButton;

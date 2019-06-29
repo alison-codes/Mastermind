@@ -16,10 +16,13 @@ const GuessRow = (props) => (
       colors={props.colors}
       code={props.guess.code}
       currentGuess={props.currentGuess}
+      addColor={props.addColor}
     />
     {
       props.currentGuess ?
-        <ScoreButton /> :
+        <ScoreButton 
+        code={props.guess.code} 
+        scoreGuess={props.scoreGuess}/> :
         <GuessScore score={props.guess.score} />
     }
   </div>

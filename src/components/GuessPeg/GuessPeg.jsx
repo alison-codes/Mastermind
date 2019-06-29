@@ -3,14 +3,14 @@ import styles from './GuessPeg.module.css';
 
 
 const GuessPeg = (props) => (
-  <button className={styles.GuessPeg} 
+  <button className={styles.GuessPeg}
     style={{
-        backgroundColor: props.color,
-        border: props.color ? `1px solid ${props.color}`: '1px dashed grey',
-        cursor: props.currentGuess && 'pointer'
-      }}>
-    
-  </button>
+      backgroundColor: props.color,
+      border: props.color ? `1px solid ${props.color}` : '1px dashed grey',
+      cursor: props.currentGuess && 'pointer'
+    }}
+    onClick={props.addColor}
+  />
 );
 
 export default GuessPeg;
