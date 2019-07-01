@@ -62,9 +62,9 @@ class App extends Component {
     let almost = 0;
     let masterCode = [this.state.code][0];
     let masterCodeCopy = [...masterCode];
+    let userCodebackup = [...this.state.guesses]
     let guessNumber = this.state.guesses.length - 1;
-    let userCode = this.state.guesses[guessNumber].code;
-
+    let userCode = userCodebackup[guessNumber].code;
     console.log('mastercode:', masterCode);
     console.log('usercode:', userCode);
     userCode.forEach((guessedPeg, idx) => {
@@ -78,9 +78,20 @@ class App extends Component {
       }
       return;
     });
-    console.log('perfect:', perfect);
-    console.log('almost:', almost);
+
+    let currentState = [...this.state.guesses];
+    let currentGuess = {...currentState[guessNumber]};
+    currentGuess.score = {
+      perfect: perfect,
+      almost: almost
+    };
+    currentState[guessNumber] = currentGuess;
+    if (perfect !== 4) currentState.push(this.getNewGuess());
+    this.setState({
+      guesses: currentState
+    });
   }
+
   render() {
     let winTries = this.getWinTries();
     return (
