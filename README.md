@@ -1,3 +1,5 @@
+This online [Mastermind](https://en.wikipedia.org/wiki/Mastermind_(board_game)) game was created to build my understanding of the React Framework.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
