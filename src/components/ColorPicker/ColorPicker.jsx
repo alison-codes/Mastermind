@@ -15,7 +15,6 @@ const ColorPicker = (props) => (
         onClick={() =>
           props.handleColorSelection(idx)}
       />
-      
     )}
   </div>
 );

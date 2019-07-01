@@ -1,0 +1,10 @@
+.GamePage-link-margin {
+    margin-bottom: 10px;
+}
+
+.GamePage-rightSide {
+  display: flex;
+  flex-flow: column;
+  margin-left: 5vw;
+  align-items: center;
+}

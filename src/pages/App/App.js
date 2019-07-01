@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import GameBoard from './components/GameBoard/GameBoard';
-import ColorPicker from './components/ColorPicker/ColorPicker';
-import GameTimer from './components/GameTimer/GameTimer';
-import NewGameButton from './components/NewGameButton/NewGameButton';
+import GamePage from '../../pages/GamePage/GamePage';
+import SettingsPage from '../SettingsPage/SettingsPage';
+
 
 const colors = ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD'];
 
@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {
       selColorIdx: 0,
       // Update to initial with only one guess object
-      guesses: [this.getNewGuess(), this.getNewGuess()],
+      guesses: [this.getNewGuess()],
       code: this.genCode()
     };
   }
@@ -72,15 +72,17 @@ class App extends Component {
         perfect++;
         masterCodeCopy[idx] = null;
       }
-      else if (masterCodeCopy.includes(guessedPeg)) {
+    });
+    userCode.forEach((guessedPeg, idx) => {
+      let foundIdx = masterCodeCopy.indexOf(guessedPeg);
+      if (foundIdx > -1) {
         almost++;
-        masterCodeCopy[idx] = null;
+        masterCodeCopy[foundIdx] = null;
       }
-      return;
     });
 
     let currentState = [...this.state.guesses];
-    let currentGuess = {...currentState[guessNumber]};
+    let currentGuess = { ...currentState[guessNumber] };
     currentGuess.score = {
       perfect: perfect,
       almost: almost
@@ -96,27 +98,24 @@ class App extends Component {
     let winTries = this.getWinTries();
     return (
       <div className="App">
-        <header className="App-header">React Mastermind</header>
-        <div className="flex-h">
-          <GameBoard
-            colors={colors}
-            guesses={this.state.guesses}
-            addColor={this.addColor}
-            scoreGuess={this.scoreGuess}
-          />
-          <div className="App-RightSide">
-            <ColorPicker
+        <header className='App-header'>React Mastermind </header>
+        <Switch>
+          <Route exact path='/' render={() =>
+            <GamePage
+              winTries={winTries}
               colors={colors}
               selColorIdx={this.state.selColorIdx}
+              guesses={this.state.guesses}
               handleColorSelection={this.handleColorSelection}
-            />
-            <GameTimer />
-            <NewGameButton
               handleNewGame={this.handleNewGame}
+              addColor={this.addColor}
+              scoreGuess={this.scoreGuess}
             />
-          </div>
-        </div>
-        <footer>{(winTries ? `You Won in ${winTries} Guesses!` : 'Good Luck!')}</footer>
+          } />
+          <Route exact path='/settings' render={props =>
+            <SettingsPage {...props} />
+          } />
+        </Switch>
       </div>
     );
   }
