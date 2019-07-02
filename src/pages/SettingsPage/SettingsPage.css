@@ -1,0 +1,28 @@
+.Settings {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+  
+.Settings-level-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+  
+.Settings-level-row button {
+  width: 90px;
+  margin: 10px;
+}
+  
+.Settings-level-colors {
+  display: flex;
+}
+  
+.Settings-color {
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  border-radius: 50%;
+  opacity: 0.85;
+}
+  

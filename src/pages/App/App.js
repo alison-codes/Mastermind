@@ -5,7 +5,11 @@ import GamePage from '../../pages/GamePage/GamePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
 
 
-const colors = ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD'];
+const colors = {
+  Easy: ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD'],
+  Moderate: ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD', '#A9d256'],
+  Difficult: ['#7CCCE5', '#FDE47F', '#E04644', '#B576AD', '#A9d256', '#D27d56'],
+};
 
 class App extends Component {
   constructor() {
@@ -14,7 +18,10 @@ class App extends Component {
       selColorIdx: 0,
       // Update to initial with only one guess object
       guesses: [this.getNewGuess()],
-      code: this.genCode()
+      code: this.genCode(),
+      difficulty: "Easy",
+      elapsedTime: 0,
+      isTiming: true
     };
   }
   getNewGuess() {
@@ -33,16 +40,25 @@ class App extends Component {
     return {
       selColorIdx: 0,
       guesses: [this.getNewGuess()],
-      code: this.genCode()
+      code: this.genCode(),
+      difficulty: this.state.difficulty,
+      elapsedTime: 0,
+      isTiming: true
     };
   }
+  // generate the color combination the player is trying to find
   genCode() {
-    return new Array(4).fill().map(dummy => Math.floor(Math.random() * 4));
+    let numColors = this.state && colors[this.state.difficulty].length;
+    numColors = numColors || 4;
+    return new Array(4).fill().map(dummy => Math.floor(Math.random() * numColors));
   }
   //event handlers
   handleColorSelection = (colorIdx) => {
     // debugger
     this.setState({ selColorIdx: colorIdx });
+  };
+  handleDifficultyChange = (level) => {
+    this.setState({ difficulty: level });
   };
   getWinTries() {
     // if winner, return num guesses, otherwise 0 (no winner)
@@ -90,8 +106,13 @@ class App extends Component {
     currentState[guessNumber] = currentGuess;
     if (perfect !== 4) currentState.push(this.getNewGuess());
     this.setState({
-      guesses: currentState
+      guesses: currentState,
+      isTiming: perfect !== 4
     });
+  }
+
+  handleTimerUpdate = () => {
+    this.setState((state) => ({ elapsedTime: ++state.elapsedTime }));
   }
 
   render() {
@@ -103,17 +124,25 @@ class App extends Component {
           <Route exact path='/' render={() =>
             <GamePage
               winTries={winTries}
-              colors={colors}
+              colors={colors[this.state.difficulty]}
               selColorIdx={this.state.selColorIdx}
               guesses={this.state.guesses}
               handleColorSelection={this.handleColorSelection}
               handleNewGame={this.handleNewGame}
               addColor={this.addColor}
               scoreGuess={this.scoreGuess}
+              difficulty={this.state.difficulty}
+              elapsedTime={this.state.elapsedTime}
+              handleTimerUpdate={this.handleTimerUpdate}
+              isTiming={this.state.isTiming}
             />
           } />
           <Route exact path='/settings' render={props =>
-            <SettingsPage {...props} />
+            <SettingsPage
+              {...props}
+              colorsLookup={colors}
+              handleDifficultyChange={this.handleDifficultyChange}
+              difficulty={this.state.difficulty} />
           } />
         </Switch>
       </div>
