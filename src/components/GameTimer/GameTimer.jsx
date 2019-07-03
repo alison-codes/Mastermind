@@ -8,6 +8,7 @@ function formatTime(seconds) {
 }
 
 class GameTimer extends Component {
+    // increase time
     handleTick = () => {
         if (!this.props.isTiming) return;
         this.props.handleTimerUpdate();
@@ -28,10 +29,5 @@ class GameTimer extends Component {
         );
     }
 }
-// const GameTimer = (props) => (
-//     <div className={styles.GameTimer} >
-//         00:00
-//     </div>
-// );
 
 export default GameTimer;

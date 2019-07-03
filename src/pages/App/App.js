@@ -112,6 +112,8 @@ class App extends Component {
   }
 
   handleTimerUpdate = () => {
+    // enable timer to start when user has chosen the first four colors
+    if (this.state.guesses[0].code.includes(null)) return;
     this.setState((state) => ({ elapsedTime: ++state.elapsedTime }));
   }
 
