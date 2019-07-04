@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { getAllScores, createscore } from '../../services/mastermindapi';
+
 import './App.css';
 import GamePage from '../../pages/GamePage/GamePage';
 import SettingsPage from '../SettingsPage/SettingsPage';
+import ScorePage from '../ScorePage/ScorePage';
 
 
 const colors = {
@@ -21,7 +24,8 @@ class App extends Component {
       code: this.genCode(),
       difficulty: "Easy",
       elapsedTime: 0,
-      isTiming: true
+      isTiming: true,
+      scores: []
     };
   }
   getNewGuess() {
@@ -35,6 +39,15 @@ class App extends Component {
   }
   handleNewGame = () => {
     this.setState(this.returnBlankState());
+  }
+  async componentDidMount() {
+    let scores = await getAllScores();
+    this.setState({
+      scores
+    })
+  }
+  handleUpdateScores = (scores) => {
+    this.setState({ scores });
   }
   returnBlankState() {
     return {
@@ -104,11 +117,34 @@ class App extends Component {
       almost: almost
     };
     currentState[guessNumber] = currentGuess;
-    if (perfect !== 4) currentState.push(this.getNewGuess());
-    this.setState({
-      guesses: currentState,
-      isTiming: perfect !== 4
-    });
+    if (perfect !== 4) {
+      currentState.push(this.getNewGuess());
+      this.setState({
+        guesses: currentState,
+        isTiming: perfect !== 4
+      });
+    }
+    else {
+      this.setState(state => ({ isTiming: false, guesses: currentState }), async function () {
+        // Do high-score logic in this callback
+        if (this.state.scores.length < 20) {
+          let initials = prompt('Congrats you have a top-20 score! Enter your initials: ').substr(0, 3);
+          await createscore({ initials: initials, numGuesses: currentState.length, seconds: this.state.elapsedTime });
+        }
+      });
+    };
+
+    // this.setState({
+    //   guesses: currentState,
+    //   isTiming: perfect !== 4
+    // });
+  }
+  isHighScore = (guessesCopy) => {
+    let lastScore = this.state.scores[this.state.scores.length - 1];
+    return (guessesCopy.length < lastScore.numGuesses || (
+      guessesCopy.length === lastScore.numGuesses &&
+      this.state.elapsedTime < lastScore.seconds
+    ));
   }
 
   handleTimerUpdate = () => {
@@ -146,6 +182,12 @@ class App extends Component {
               handleDifficultyChange={this.handleDifficultyChange}
               difficulty={this.state.difficulty} />
           } />
+          <Route exact path='/high-scores' render={() => (
+            <ScorePage
+              scores={this.state.scores}
+              handleUpdateScores={this.handleUpdateScores}
+            />
+          )} />
         </Switch>
       </div>
     );
@@ -153,3 +195,6 @@ class App extends Component {
 }
 
 export default App;
+
+
+require('config')

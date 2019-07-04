@@ -1,0 +1,11 @@
+.HighScores {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.cancel {
+    width: 150px;
+    margin-top: 40px;
+}
